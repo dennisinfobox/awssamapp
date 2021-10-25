@@ -1,7 +1,6 @@
 import os
 
 import boto3
-import pytest
 
 
 def aws_credentials():

@@ -6,20 +6,20 @@ import os
 from unittest import mock
 import boto3
 
-from functions.Fixtures import setup_db, aws_credentials
+from tests.conftest import setup_db, aws_credentials
 from functions.ingest_metadata_downloader.app import get_endpoints, get_dyname_table_name, get_s3_bucket_name, \
     upload_content, lambda_handler
 
 aws_credentials()
 
 
-def setupAws():
+def setup_aws():
     setup_db(None)
     s3_client = boto3.client('s3', "us-east-1")
     s3_client.create_bucket(Bucket='notices-bucket')
 
 
-def setupBucket():
+def setup_bucket():
     s3_client = boto3.client('s3', "us-east-1")
 
     bucket_name = get_s3_bucket_name()
@@ -35,7 +35,7 @@ def setupBucket():
 def test_lambda_handler(mock_get):
     mock_get.return_value.status_code = 200
     mock_get.return_value.content = "fake content"
-    setupAws()
+    setup_aws()
 
     result = lambda_handler({'cellarId': '94a481c6-1298-11eb-9a54-01aa75ed71a1'}, "")
 
@@ -48,7 +48,7 @@ def test_lambda_handler(mock_get):
 @patch('functions.ingest_metadata_downloader.app.requests.get')
 def test_lambda_handler_when_exception_raised(mock_get):
     mock_get.side_effect = requests.exceptions.ConnectionError()
-    setupAws()
+    setup_aws()
 
     result = lambda_handler({'cellarId': '94a481c6-1298-11eb-9a54-01aa75ed71a1'}, "")
 
@@ -58,7 +58,7 @@ def test_lambda_handler_when_exception_raised(mock_get):
 @mock_s3
 @mock.patch.dict(get_endpoints(), {"aws": None})
 def test_upload_content():
-    s3_client = setupBucket()
+    s3_client = setup_bucket()
 
     cellar_id = "testcelarid"
     upload_content("", cellar_id)
@@ -72,7 +72,7 @@ def test_upload_content():
 @mock_s3
 @mock.patch.dict(get_endpoints(), {"aws": None})
 def test_upload_content_when_item_exists():
-    s3_client = setupBucket()
+    s3_client = setup_bucket()
     cellar_id = "testcelarid"
     object_key = f'notice_{cellar_id}.xml'
     s3_client.put_object(Bucket=get_s3_bucket_name(), Key=object_key, Body="some fake")

@@ -1,7 +1,7 @@
 from moto import mock_dynamodb2
 import os
 from unittest import mock
-from functions.Fixtures import setup_db, aws_credentials
+from tests.conftest import setup_db, aws_credentials
 from functions.ingest_alert_filter.app import get_endpoint, get_dynamo_table_name
 
 aws_credentials()
