@@ -1,14 +1,15 @@
 import os
+from unittest import mock
 
 import boto3
 
 
+@mock.patch.dict(os.environ, {"AWS_ACCESS_KEY_ID": "testing",
+                              "AWS_SECRET_ACCESS_KEY": "testing",
+                              "AWS_SESSION_TOKEN": "testing",
+                              "AWS_SECURITY_TOKEN": "testing"})
 def aws_credentials():
     """Mocked AWS Credentials for moto."""
-    os.environ["AWS_ACCESS_KEY_ID"] = "testing"
-    os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
-    os.environ["AWS_SECURITY_TOKEN"] = "testing"
-    os.environ["AWS_SESSION_TOKEN"] = "testing"
 
 
 def setup_db(ep):

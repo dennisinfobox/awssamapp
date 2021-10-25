@@ -1,16 +1,14 @@
-from unittest.mock import patch
-
-import requests
-from moto import mock_dynamodb2, mock_s3
 import os
 from unittest import mock
-import boto3
+from unittest.mock import patch
 
-from tests.conftest import setup_db, aws_credentials
+import boto3
+import requests
+from moto import mock_dynamodb2, mock_s3
+
 from functions.ingest_metadata_downloader.app import get_endpoints, get_dyname_table_name, get_s3_bucket_name, \
     upload_content, lambda_handler
-
-aws_credentials()
+from tests.conftest import setup_db
 
 
 def setup_aws():
