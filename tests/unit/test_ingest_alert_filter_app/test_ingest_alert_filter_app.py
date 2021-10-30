@@ -4,7 +4,7 @@ from unittest import mock
 from moto import mock_dynamodb2
 
 from functions.ingest_alert_filter.app import get_endpoint, get_dynamo_table_name
-from tests.conftest import setup_db
+from tests.unit.conftest import setup_db
 
 test_event = {'cellarId': '94a481c6-1298-11eb-9a54-01aa75ed71a1'}
 

@@ -1,19 +1,23 @@
 import os
-from unittest import mock
-
+import pytest
 import boto3
 
 
-@mock.patch.dict(os.environ, {"AWS_ACCESS_KEY_ID": "testing",
-                              "AWS_SECRET_ACCESS_KEY": "testing",
-                              "AWS_SESSION_TOKEN": "testing",
-                              "AWS_SECURITY_TOKEN": "testing"})
 def aws_credentials():
     """Mocked AWS Credentials for moto."""
+    os.environ["AWS_ACCESS_KEY_ID"] = "testing"
+    os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
+    os.environ["AWS_SECURITY_TOKEN"] = "testing"
+    os.environ["AWS_SESSION_TOKEN"] = "testing"
+    os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
+
 
 
 def setup_db(ep):
-    dynamodb = boto3.resource('dynamodb', ep)
+    aws_credentials()
+    print("In setup db")
+    print(os.getenv("AWS_DEFAULT_REGION"))
+    dynamodb = boto3.resource('dynamodb')
     table_name = 'eurlex_documents'
     dynamodb.create_table(
         TableName=table_name,

@@ -8,7 +8,7 @@ from moto import mock_dynamodb2, mock_s3
 
 from functions.ingest_metadata_downloader.app import get_endpoints, get_dyname_table_name, get_s3_bucket_name, \
     upload_content, lambda_handler
-from tests.conftest import setup_db
+from tests.unit.conftest import setup_db
 
 
 def setup_aws():
